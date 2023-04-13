@@ -27,8 +27,8 @@ void processInput(GLFWwindow *window);
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
 
 // settings
-const unsigned int SCR_WIDTH = 1200;
-const unsigned int SCR_HEIGHT = 800;
+const unsigned int SCR_WIDTH = 1000;
+const unsigned int SCR_HEIGHT = 700;
 
 // camera
 
@@ -56,6 +56,7 @@ struct ProgramState {
     bool ImGuiEnabled = false;
     Camera camera;
     bool CameraMouseMovementUpdateEnabled = true;
+
     glm::vec3 sunPosition = glm::vec3(0.0f);
     float sunScale = 1.0f;
 
@@ -67,7 +68,7 @@ struct ProgramState {
 
     PointLight pointLight;
     ProgramState()
-            : camera(glm::vec3(29.74f, 11.13f, 34.96f)) {}
+            : camera(glm::vec3(-11.1f, 0.5f, 38.38f)) {}
 
     void SaveToFile(std::string filename);
 
@@ -175,7 +176,7 @@ int main() {
     Model sunModel("resources/objects/sun/sun.obj");
     sunModel.SetShaderTextureNamePrefix("material.");
 
-    Model earthModel("resources/objects/earth/EARTH.obj");
+    Model earthModel("resources/objects/earth/earth.obj");
     earthModel.SetShaderTextureNamePrefix("material.");
 
     Model moonModel("resources/objects/moon/moon.obj");
@@ -184,8 +185,8 @@ int main() {
 
 
     PointLight& pointLight = programState->pointLight;
-    pointLight.position = glm::vec3(4.0f, 4.0, 0.0);
-    pointLight.ambient = glm::vec3(0.2, 0.2, 0.2);
+    pointLight.position = glm::vec3(4.0f, 18.0, 0.0);
+    pointLight.ambient = glm::vec3(1.0, 1.0, 1.0);
     pointLight.diffuse = glm::vec3(0.8, 0.8, 0.8);
     pointLight.specular = glm::vec3(1.0, 1.0, 1.0);
 
@@ -239,19 +240,17 @@ int main() {
         // sun
         glm::mat4 model = glm::mat4(1.0f);
         glm::vec3 sunPos = glm::vec3(0.0f);
-        float sunSize = 7.0f;
+        float sunSize = 9.0f;
         model = glm::translate(model, sunPos);
         model = glm::scale(model, glm::vec3(sunSize));
-        //model = glm::rotate(model, currentFrame, glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, currentFrame, glm::vec3(0.0f, 1.0f, 0.0f));
         ourShader.setMat4("model", model);
         sunModel.Draw(ourShader);
 
         // earth
         model = glm::mat4(1.0f);
-//        glm::vec3 earthPos = glm::vec3(sunPos.x + sin(-currentFrame)*20, 15.0f, sunPos.z + cos(-currentFrame)*20);
-//        float earthSize = 2.5f;
-        glm::vec3 earthPos = glm::vec3(25.0f, 5.5f, 0.0f);
-        float earthSize = 0.8f;
+        glm::vec3 earthPos = glm::vec3(sin(-currentFrame)*17, 4.0f, cos(-currentFrame)*17);
+        float earthSize = 2.0f;
         model = glm::translate(model, earthPos);
         model = glm::scale(model, glm::vec3(earthSize));
         model = glm::rotate(model, currentFrame, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -260,10 +259,8 @@ int main() {
 
         // moon
         model = glm::mat4(1.0f);
-//        glm::vec3 moonPos = glm::vec3(earthPos.x + sin(-currentFrame)*5, earthPos.y, earthPos.z + cos(-currentFrame)*5);
-//        float moonSize = earthSize/1.5;
-        glm::vec3 moonPos = glm::vec3(19.0f, 5.0f, 0.0f);
-        float moonSize = programState->moonScale;
+        glm::vec3 moonPos = glm::vec3(earthPos.x + sin(-currentFrame*1.8)*3, 4.0f, earthPos.z + cos(-currentFrame*1.8)*3);
+        float moonSize = 0.5f;
         model = glm::translate(model, moonPos);
         model = glm::scale(model, glm::vec3(moonSize));
         model = glm::rotate(model, currentFrame, glm::vec3(0.0f, 1.0f, 0.0f));
