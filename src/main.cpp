@@ -27,8 +27,8 @@ void processInput(GLFWwindow *window);
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
 
 // settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const unsigned int SCR_WIDTH = 1200;
+const unsigned int SCR_HEIGHT = 800;
 
 // camera
 
@@ -56,11 +56,18 @@ struct ProgramState {
     bool ImGuiEnabled = false;
     Camera camera;
     bool CameraMouseMovementUpdateEnabled = true;
-    glm::vec3 backpackPosition = glm::vec3(0.0f);
-    float backpackScale = 1.0f;
+    glm::vec3 sunPosition = glm::vec3(0.0f);
+    float sunScale = 1.0f;
+
+    glm::vec3 earthPosition = glm::vec3(0.0f);
+    float earthScale = 1.0f;
+
+    glm::vec3 moonPosition = glm::vec3(0.0f);
+    float moonScale = 1.0f;
+
     PointLight pointLight;
     ProgramState()
-            : camera(glm::vec3(0.0f, 0.0f, 3.0f)) {}
+            : camera(glm::vec3(29.74f, 11.13f, 34.96f)) {}
 
     void SaveToFile(std::string filename);
 
@@ -165,13 +172,21 @@ int main() {
 
     // load models
     // -----------
-    Model ourModel("resources/objects/backpack/backpack.obj");
-    ourModel.SetShaderTextureNamePrefix("material.");
+    Model sunModel("resources/objects/sun/sun.obj");
+    sunModel.SetShaderTextureNamePrefix("material.");
+
+    Model earthModel("resources/objects/earth/EARTH.obj");
+    earthModel.SetShaderTextureNamePrefix("material.");
+
+    Model moonModel("resources/objects/moon/moon.obj");
+    moonModel.SetShaderTextureNamePrefix("material.");
+
+
 
     PointLight& pointLight = programState->pointLight;
     pointLight.position = glm::vec3(4.0f, 4.0, 0.0);
-    pointLight.ambient = glm::vec3(0.1, 0.1, 0.1);
-    pointLight.diffuse = glm::vec3(0.6, 0.6, 0.6);
+    pointLight.ambient = glm::vec3(0.2, 0.2, 0.2);
+    pointLight.diffuse = glm::vec3(0.8, 0.8, 0.8);
     pointLight.specular = glm::vec3(1.0, 1.0, 1.0);
 
     pointLight.constant = 1.0f;
@@ -204,7 +219,7 @@ int main() {
 
         // don't forget to enable shader before setting uniforms
         ourShader.use();
-        pointLight.position = glm::vec3(4.0 * cos(currentFrame), 4.0f, 4.0 * sin(currentFrame));
+        pointLight.position = glm::vec3(4.0f, 4.0f, 4.0f);
         ourShader.setVec3("pointLight.position", pointLight.position);
         ourShader.setVec3("pointLight.ambient", pointLight.ambient);
         ourShader.setVec3("pointLight.diffuse", pointLight.diffuse);
@@ -221,13 +236,42 @@ int main() {
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
 
-        // render the loaded model
+        // sun
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model,
-                               programState->backpackPosition); // translate it down so it's at the center of the scene
-        model = glm::scale(model, glm::vec3(programState->backpackScale));    // it's a bit too big for our scene, so scale it down
+        glm::vec3 sunPos = glm::vec3(0.0f);
+        float sunSize = 7.0f;
+        model = glm::translate(model, sunPos);
+        model = glm::scale(model, glm::vec3(sunSize));
+        //model = glm::rotate(model, currentFrame, glm::vec3(0.0f, 1.0f, 0.0f));
         ourShader.setMat4("model", model);
-        ourModel.Draw(ourShader);
+        sunModel.Draw(ourShader);
+
+        // earth
+        model = glm::mat4(1.0f);
+//        glm::vec3 earthPos = glm::vec3(sunPos.x + sin(-currentFrame)*20, 15.0f, sunPos.z + cos(-currentFrame)*20);
+//        float earthSize = 2.5f;
+        glm::vec3 earthPos = glm::vec3(25.0f, 5.5f, 0.0f);
+        float earthSize = 0.8f;
+        model = glm::translate(model, earthPos);
+        model = glm::scale(model, glm::vec3(earthSize));
+        model = glm::rotate(model, currentFrame, glm::vec3(0.0f, 1.0f, 0.0f));
+        ourShader.setMat4("model", model);
+        earthModel.Draw(ourShader);
+
+        // moon
+        model = glm::mat4(1.0f);
+//        glm::vec3 moonPos = glm::vec3(earthPos.x + sin(-currentFrame)*5, earthPos.y, earthPos.z + cos(-currentFrame)*5);
+//        float moonSize = earthSize/1.5;
+        glm::vec3 moonPos = glm::vec3(19.0f, 5.0f, 0.0f);
+        float moonSize = programState->moonScale;
+        model = glm::translate(model, moonPos);
+        model = glm::scale(model, glm::vec3(moonSize));
+        model = glm::rotate(model, currentFrame, glm::vec3(0.0f, 1.0f, 0.0f));
+        ourShader.setMat4("model", model);
+        moonModel.Draw(ourShader);
+
+
+
 
         if (programState->ImGuiEnabled)
             DrawImGui(programState);
@@ -258,13 +302,17 @@ void processInput(GLFWwindow *window) {
         glfwSetWindowShouldClose(window, true);
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        programState->camera.ProcessKeyboard(FORWARD, deltaTime);
+        programState->camera.ProcessKeyboard(FORWARD, deltaTime*7);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        programState->camera.ProcessKeyboard(BACKWARD, deltaTime);
+        programState->camera.ProcessKeyboard(BACKWARD, deltaTime*7);
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        programState->camera.ProcessKeyboard(LEFT, deltaTime);
+        programState->camera.ProcessKeyboard(LEFT, deltaTime*7);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        programState->camera.ProcessKeyboard(RIGHT, deltaTime);
+        programState->camera.ProcessKeyboard(RIGHT, deltaTime*7);
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+        programState->camera.ProcessKeyboard(UP, deltaTime*7);
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+        programState->camera.ProcessKeyboard(DOWN, deltaTime*7);
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -312,12 +360,18 @@ void DrawImGui(ProgramState *programState) {
         ImGui::Text("Hello text");
         ImGui::SliderFloat("Float slider", &f, 0.0, 1.0);
         ImGui::ColorEdit3("Background color", (float *) &programState->clearColor);
-        ImGui::DragFloat3("Backpack position", (float*)&programState->backpackPosition);
-        ImGui::DragFloat("Backpack scale", &programState->backpackScale, 0.05, 0.1, 4.0);
+        ImGui::DragFloat3("Sun position", (float*)&programState->sunPosition);
+        ImGui::DragFloat("Sun scale", &programState->sunScale, 0.05, 0.1, 4.0);
 
-        ImGui::DragFloat("pointLight.constant", &programState->pointLight.constant, 0.05, 0.0, 1.0);
-        ImGui::DragFloat("pointLight.linear", &programState->pointLight.linear, 0.05, 0.0, 1.0);
-        ImGui::DragFloat("pointLight.quadratic", &programState->pointLight.quadratic, 0.05, 0.0, 1.0);
+        ImGui::DragFloat3("Earth position", (float*)&programState->earthPosition);
+        ImGui::DragFloat("Earth scale", &programState->earthScale, 0.05, 0.1, 4.0);
+
+        ImGui::DragFloat3("Moon position", (float*)&programState->moonPosition);
+        ImGui::DragFloat("Moon scale", &programState->moonScale, 0.05, 0.1, 4.0);
+
+//        ImGui::DragFloat("pointLight.constant", &programState->pointLight.constant, 0.05, 0.0, 1.0);
+//        ImGui::DragFloat("pointLight.linear", &programState->pointLight.linear, 0.05, 0.0, 1.0);
+//        ImGui::DragFloat("pointLight.quadratic", &programState->pointLight.quadratic, 0.05, 0.0, 1.0);
         ImGui::End();
     }
 
@@ -344,5 +398,10 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
         } else {
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         }
+
+    }
+    if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS){
+        programState->CameraMouseMovementUpdateEnabled = !programState->CameraMouseMovementUpdateEnabled;
+        std::cout << "Camera lock - " << (programState->CameraMouseMovementUpdateEnabled ? "Disabled" : "Enabled") << '\n';
     }
 }

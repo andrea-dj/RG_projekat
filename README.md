@@ -2,10 +2,14 @@
 Prazan projekat sa pratećim bibliotekama koje koristimo na času. 
 
 # Uputstvo
-1. `git clone https://github.com/matf-racunarska-grafika/project_base.git`
-2. CLion -> Open -> path/to/my/project_base
-3. Main se nalazi u src/main.cpp
-4. Cpp fajlovi idu u src folder
-5. Zaglavlja (h i hpp) fajlovi idu u include
-6. Šejderi idu u folder shaders. `Vertex shader` ima ekstenziju `.vs`, `fragment shader` ima ekstenziju `.fs`
-7. ALT+SHIFT+F10 -> project_base -> run
+- Kretanje u prostoru uz pomoć miša i tastature:
+    - `ESC` - prekida izvršavanje programa
+    - `W` - napred u odnosu na smer pogleda kamere
+    - `S` - unazad u odnosu na smer pogleda kamere
+    - `A` - kretanje u levu stranu
+    - `D` - kretanje u desnu stranu
+    - `Q` - kretanje ka gore
+    - `E` - kretanje ka dole
+- Funkcionalnosti:
+    - `F1` - otvara ImGUI sa svim opcijama 
+    - `C` - Toggle zaključavanje i otključavanje kamere
