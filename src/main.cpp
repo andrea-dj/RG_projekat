@@ -62,17 +62,13 @@ struct ProgramState {
     Camera camera;
     bool CameraMouseMovementUpdateEnabled = true;
 
-//    glm::vec3 sunPosition = glm::vec3(0.0f);
-//    float sunScale = 1.0f;
-//
-//    glm::vec3 earthPosition = glm::vec3(0.0f);
-//    float earthScale = 1.0f;
-//
-//    glm::vec3 moonPosition = glm::vec3(0.0f);
-//    float moonScale = 1.0f;
+    float anglex;
+    float angley;
+    float anglez;
 
     PointLight pointLight;
     PointLight dirLight;
+
     ProgramState()
             : camera(glm::vec3(-11.1f, 0.5f, 38.38f)) {}
 
@@ -176,6 +172,7 @@ int main() {
     // build and compile shaders
     // -------------------------
     Shader modelShader("resources/shaders/model_lighting.vs", "resources/shaders/model_lighting.fs");
+    Shader atmosphereShader("resources/shaders/atmosphere.vs", "resources/shaders/atmosphere.fs");
     Shader skyboxShader("resources/shaders/skybox.vs", "resources/shaders/skybox.fs");
 
     float skyboxVertices[] = {
@@ -254,23 +251,46 @@ int main() {
     Model sunModel("resources/objects/sun/sun.obj");
     sunModel.SetShaderTextureNamePrefix("material.");
 
+    Model mercuryModel("resources/objects/mercury/mercury.obj");
+    mercuryModel.SetShaderTextureNamePrefix("material.");
+
+    Model venusModel("resources/objects/venus/venus.obj");
+    venusModel.SetShaderTextureNamePrefix("material.");
+
     Model earthModel("resources/objects/earth/earth.obj");
     earthModel.SetShaderTextureNamePrefix("material.");
+
+    Model atmosphereModel("resources/objects/earth/earth.obj");
+    atmosphereModel.SetShaderTextureNamePrefix("material.");
 
     Model moonModel("resources/objects/moon/moon.obj");
     moonModel.SetShaderTextureNamePrefix("material.");
 
+    Model marsModel("resources/objects/mars/mars.obj");
+    marsModel.SetShaderTextureNamePrefix("material.");
+
+    Model jupiterModel("resources/objects/jupiter/jupiter.obj");
+    jupiterModel.SetShaderTextureNamePrefix("material.");
+
+    Model saturnModel("resources/objects/saturn/13906_Saturn_v1_l3.obj");
+    saturnModel.SetShaderTextureNamePrefix("material.");
+
+    Model uranusModel("resources/objects/uranus/uranus.obj");
+    uranusModel.SetShaderTextureNamePrefix("material.");
+
+    Model neptuneModel("resources/objects/neptune/neptune.obj");
+    neptuneModel.SetShaderTextureNamePrefix("material.");
 
 
-//    PointLight& pointLight = programState->pointLight;
-//    pointLight.position = glm::vec3(4.0f, 18.0, 0.0);
-//    pointLight.ambient = glm::vec3(1.0, 1.0, 1.0);
-//    pointLight.diffuse = glm::vec3(0.8, 0.8, 0.8);
-//    pointLight.specular = glm::vec3(1.0, 1.0, 1.0);
-//
-//    pointLight.constant = 1.0f;
-//    pointLight.linear = 0.09f;
-//    pointLight.quadratic = 0.032f;
+    PointLight& pointLight = programState->pointLight;
+    pointLight.position = glm::vec3(0.0f, 0.0, 0.0);
+    pointLight.ambient = glm::vec3(1.0, 1.0, 1.0);
+    pointLight.diffuse = glm::vec3(0.8, 0.8, 0.8);
+    pointLight.specular = glm::vec3(1.0, 1.0, 1.0);
+
+    pointLight.constant = 1.0f;
+    pointLight.linear = 0.09f;
+    pointLight.quadratic = 0.032f;
 
 
 
@@ -322,35 +342,132 @@ int main() {
         // sun
         glm::mat4 model = glm::mat4(1.0f);
         glm::vec3 sunPos = glm::vec3(0.0f);
-        float sunSize = 8.0f;
+        float sunSize = 10.5f;
         model = glm::translate(model, sunPos);
         model = glm::scale(model, glm::vec3(sunSize));
-        model = glm::rotate(model, currentFrame/2, glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, currentFrame/4, glm::vec3(0.0f, 1.0f, 0.0f));
         modelShader.setMat4("model", model);
         sunModel.Draw(modelShader);
 
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
+
+        // mercury
+        model = glm::mat4(1.0f);
+        glm::vec3 mercuryPos = glm::vec3(sin(currentFrame/4)*13, 4.0f, cos(currentFrame/4)*13);
+        float mercurySize = 1.7f;
+        model = glm::translate(model, mercuryPos);
+        model = glm::scale(model, glm::vec3(mercurySize));
+        model = glm::rotate(model, currentFrame/3, glm::vec3(0.0f, 1.0f, 0.0f));
+        modelShader.setMat4("model", model);
+        mercuryModel.Draw(modelShader);
+
+        // venus
+        model = glm::mat4(1.0f);
+        glm::vec3 venusPos = glm::vec3(sin(currentFrame/5)*18, 4.0f, cos(currentFrame/5)*18);
+        float venusSize = 2.4f;
+        model = glm::translate(model, venusPos);
+        model = glm::scale(model, glm::vec3(venusSize));
+        model = glm::rotate(model, -currentFrame/2, glm::vec3(0.0f, 1.0f, 0.0f));
+        modelShader.setMat4("model", model);
+        venusModel.Draw(modelShader);
+
         // earth
         model = glm::mat4(1.0f);
-        glm::vec3 earthPos = glm::vec3(sin(-currentFrame/2.5)*18, 4.0f, cos(-currentFrame/2.5)*18);
-        float earthSize = 2.2f;
+        glm::vec3 earthPos = glm::vec3(sin(currentFrame/6)*24.3, 4.0f, cos(currentFrame/6)*24.3);
+        float earthSize = 2.3f;
         model = glm::translate(model, earthPos);
         model = glm::scale(model, glm::vec3(earthSize));
-        model = glm::rotate(model, -currentFrame/2, glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, currentFrame/2, glm::vec3(0.0f, 1.0f, 0.0f));
         modelShader.setMat4("model", model);
         earthModel.Draw(modelShader);
 
         // moon
         model = glm::mat4(1.0f);
-        glm::vec3 moonPos = glm::vec3(earthPos.x + sin(-currentFrame*3)*4, 4.0f, earthPos.z + cos(-currentFrame*3)*4);
-        float moonSize = 0.65f;
+        glm::vec3 moonPos = glm::vec3(earthPos.x + sin(currentFrame*2)*2.85, 4.5f, earthPos.z + cos(currentFrame*2)*2.85);
+        float moonSize = 0.3f;
         model = glm::translate(model, moonPos);
         model = glm::scale(model, glm::vec3(moonSize));
-        model = glm::rotate(model, currentFrame/2, glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, currentFrame/4, glm::vec3(0.0f, 1.0f, 0.0f));
         modelShader.setMat4("model", model);
         moonModel.Draw(modelShader);
+
+        // mars
+        model = glm::mat4(1.0f);
+        glm::vec3 marsPos = glm::vec3(sin(currentFrame/7)*30, 4.0f, cos(currentFrame/7)*30);
+        float marsSize = 2.2f;
+        model = glm::translate(model, marsPos);
+        model = glm::scale(model, glm::vec3(marsSize));
+        model = glm::rotate(model, currentFrame/2, glm::vec3(0.0f, 1.0f, 0.0f));
+        modelShader.setMat4("model", model);
+        marsModel.Draw(modelShader);
+
+        // jupiter
+        model = glm::mat4(1.0f);
+        glm::vec3 jupiterPos = glm::vec3(sin(currentFrame/8)*37, 4.0f, cos(currentFrame/8)*37);
+        float jupiterSize = 3.7f;
+        model = glm::translate(model, jupiterPos);
+        model = glm::scale(model, glm::vec3(jupiterSize));
+        model = glm::rotate(model, currentFrame, glm::vec3(0.0f, 1.0f, 0.0f));
+        modelShader.setMat4("model", model);
+        jupiterModel.Draw(modelShader);
+
+        // saturn
+        model = glm::mat4(1.0f);
+        glm::vec3 saturnPos = glm::vec3(sin(currentFrame/9)*44, 4.0f, cos(currentFrame/9)*44);
+        float saturnSize = 0.01f;
+        model = glm::translate(model, saturnPos);
+        model = glm::scale(model, glm::vec3(saturnSize));
+        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 1.0f));
+        modelShader.setMat4("model", model);
+        saturnModel.Draw(modelShader);
+
+        // uranus
+        model = glm::mat4(1.0f);
+        glm::vec3 uranusPos = glm::vec3(sin(currentFrame/10)*49.6, 4.0f, cos(currentFrame/10)*49.6);
+        float uranusSize = 2.5f;
+        model = glm::translate(model, uranusPos);
+        model = glm::scale(model, glm::vec3(uranusSize));
+        model = glm::rotate(model, currentFrame/2, glm::vec3(0.0f, 1.0f, 0.0f));
+        modelShader.setMat4("model", model);
+        uranusModel.Draw(modelShader);
+
+        // neptune
+        model = glm::mat4(1.0f);
+        glm::vec3 neptunePos = glm::vec3(sin(currentFrame/11)*56, 4.0f, cos(currentFrame/11)*56);
+        float neptuneSize = 2.6f;
+        model = glm::translate(model, neptunePos);
+        model = glm::scale(model, glm::vec3(neptuneSize));
+        model = glm::rotate(model, currentFrame/2, glm::vec3(0.0f, 1.0f, 0.0f));
+        modelShader.setMat4("model", model);
+        neptuneModel.Draw(modelShader);
+
+        //atmosphere
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LEQUAL);
+        atmosphereShader.use();
+        atmosphereShader.setVec3("color", glm::vec3(0.53f, 0.65f, 0.81f));
+        atmosphereShader.setFloat("alpha", 0.2f);
+        atmosphereShader.setMat4("projection", projection);
+        atmosphereShader.setMat4("view", view);
+
+        model = glm::mat4(1.0f);
+        glm::vec3 atmospherePos = glm::vec3(sin(currentFrame/6)*24.3, 4.0f, cos(currentFrame/6)*24.3);
+        float atmosphereSize = 2.37f;
+        model = glm::translate(model, atmospherePos);
+        model = glm::scale(model, glm::vec3(atmosphereSize));
+        atmosphereShader.setMat4("model", model);
+        atmosphereModel.Draw(atmosphereShader);
+
         glDisable(GL_CULL_FACE);
+
+
 
 
         // draw skybox as last
@@ -457,22 +574,24 @@ void DrawImGui(ProgramState *programState) {
         ImGui::Text("Hello text");
         ImGui::SliderFloat("Float slider", &f, 0.0, 1.0);
         ImGui::ColorEdit3("Background color", (float *) &programState->clearColor);
+//
+//        ImGui::SliderFloat("anglex", &programState->anglex, -360, 360);
+//        ImGui::SliderFloat("angley", &programState->angley, -360, 360);
+//        ImGui::SliderFloat("anglez", &programState->anglez, -360, 360);
+
 //        ImGui::DragFloat3("Sun position", (float*)&programState->sunPosition);
 //        ImGui::DragFloat("Sun scale", &programState->sunScale, 0.05, 0.1, 4.0);
-//
-//        ImGui::DragFloat3("Earth position", (float*)&programState->earthPosition);
-//        ImGui::DragFloat("Earth scale", &programState->earthScale, 0.05, 0.1, 4.0);
 //
 //        ImGui::DragFloat3("Moon position", (float*)&programState->moonPosition);
 //        ImGui::DragFloat("Moon scale", &programState->moonScale, 0.05, 0.1, 4.0);
 
-        ImGui::DragFloat3("pointLight.ambient", (float*)&programState->pointLight.ambient);
-        ImGui::DragFloat3("pointLight.diffuse", (float*)&programState->pointLight.diffuse);
-        ImGui::DragFloat3("pointLight.specular", (float*)&programState->pointLight.specular);
-
-        ImGui::DragFloat3("dirLight.ambient", (float*)&programState->dirLight.ambient);
-        ImGui::DragFloat3("dirLight.diffuse", (float*)&programState->dirLight.diffuse);
-        ImGui::DragFloat3("dirLight.specular", (float*)&programState->dirLight.specular);
+//        ImGui::DragFloat3("pointLight.ambient", (float*)&programState->pointLight.ambient);
+//        ImGui::DragFloat3("pointLight.diffuse", (float*)&programState->pointLight.diffuse);
+//        ImGui::DragFloat3("pointLight.specular", (float*)&programState->pointLight.specular);
+//
+//        ImGui::DragFloat3("dirLight.ambient", (float*)&programState->dirLight.ambient);
+//        ImGui::DragFloat3("dirLight.diffuse", (float*)&programState->dirLight.diffuse);
+//        ImGui::DragFloat3("dirLight.specular", (float*)&programState->dirLight.specular);
         ImGui::End();
     }
 

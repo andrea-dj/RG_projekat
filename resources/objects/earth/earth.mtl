@@ -10,4 +10,4 @@ newmtl Material__50
 	illum 2
 	Ks 0.2 0.2 0.2
 	Ns 20
-	map_Kd earth.jpg
+	map_Kd Earth_diff.jpg

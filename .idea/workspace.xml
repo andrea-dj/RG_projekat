@@ -25,20 +25,14 @@
   <component name="ChangeListManager">
     <list default="true" id="5bfc3eb7-3dba-4ccc-b550-0e0fea0271dd" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-b9eec08f02331cdd1b16.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2023-04-13T17-19-02-0795.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/project_base.dir/src/main.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/project_base.dir/src/main.cpp.o" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgui.ini" beforeDir="false" afterPath="$PROJECT_DIR$/imgui.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project_base" beforeDir="false" afterPath="$PROJECT_DIR$/project_base" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/objects/earth/earth.mtl" beforeDir="false" afterPath="$PROJECT_DIR$/resources/objects/earth/earth.mtl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/program_state.txt" beforeDir="false" afterPath="$PROJECT_DIR$/resources/program_state.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/shaders/2.model_lighting.fs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/shaders/2.model_lighting.vs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/textures/awesomeface.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/textures/container.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -62,27 +56,30 @@
     <option name="minorVersion" value="2.4" />
   </component>
   <component name="ProjectId" id="2OIm30ycvgKoR9NDDq8NiZmpghD" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "last_opened_file_path": "/home/andrea/Desktop/Grafika/MATF-RG",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/andrea/Desktop/Grafika/MATF-RG&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="CMake Application.project_base">
     <configuration name="STB_IMAGE" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="project_base" TARGET_NAME="STB_IMAGE" CONFIG_NAME="Debug">
       <method v="2">
@@ -138,6 +135,15 @@
       <workItem from="1681494468532" duration="517000" />
       <workItem from="1681496452683" duration="12000" />
       <workItem from="1681498892206" duration="1313000" />
+      <workItem from="1681508394248" duration="10649000" />
+      <workItem from="1681522316259" duration="1889000" />
+      <workItem from="1681574941700" duration="455000" />
+      <workItem from="1681582035739" duration="3096000" />
+      <workItem from="1681586147183" duration="1570000" />
+      <workItem from="1681588252302" duration="1266000" />
+      <workItem from="1681590172917" duration="330000" />
+      <workItem from="1681590848767" duration="302000" />
+      <workItem from="1681592839684" duration="1622000" />
     </task>
     <servers />
   </component>
