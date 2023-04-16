@@ -125,7 +125,7 @@ int main() {
 
     // glfw window creation
     // --------------------
-    GLFWwindow *window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Solar system", NULL, NULL);
     if (window == NULL) {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -172,7 +172,7 @@ int main() {
     // build and compile shaders
     // -------------------------
     Shader modelShader("resources/shaders/model_lighting.vs", "resources/shaders/model_lighting.fs");
-    Shader atmosphereShader("resources/shaders/atmosphere.vs", "resources/shaders/atmosphere.fs");
+    Shader lightShader("resources/shaders/model_lighting.vs", "resources/shaders/light_source.fs");
     Shader skyboxShader("resources/shaders/skybox.vs", "resources/shaders/skybox.fs");
 
     float skyboxVertices[] = {
@@ -281,16 +281,9 @@ int main() {
     Model neptuneModel("resources/objects/neptune/neptune.obj");
     neptuneModel.SetShaderTextureNamePrefix("material.");
 
-
-    PointLight& pointLight = programState->pointLight;
-    pointLight.position = glm::vec3(0.0f, 0.0, 0.0);
-    pointLight.ambient = glm::vec3(1.0, 1.0, 1.0);
-    pointLight.diffuse = glm::vec3(0.8, 0.8, 0.8);
-    pointLight.specular = glm::vec3(1.0, 1.0, 1.0);
-
-    pointLight.constant = 1.0f;
-    pointLight.linear = 0.09f;
-    pointLight.quadratic = 0.032f;
+    programState->pointLight.constant = 1.0f;
+    programState->pointLight.linear = 0.09f;
+    programState->pointLight.quadratic = 0.002f;
 
 
 
@@ -316,42 +309,47 @@ int main() {
         glClearColor(programState->clearColor.r, programState->clearColor.g, programState->clearColor.b, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // don't forget to enable shader before setting uniforms
-        modelShader.use();
-        modelShader.setVec3("pointLight.position", glm::vec3(programState->pointLight.position));
-        modelShader.setVec3("pointLight.ambient", glm::vec3(0.1));
-        modelShader.setVec3("pointLight.diffuse", glm::vec3(0.4));
-        modelShader.setVec3("pointLight.specular", glm::vec3(0.2));
-        modelShader.setFloat("pointLight.constant", 1.0f);
-        modelShader.setFloat("pointLight.linear", 0.09f);
-        modelShader.setFloat("pointLight.quadratic", 0.032f);
-        modelShader.setVec3("viewPosition", programState->camera.Position);
-        modelShader.setFloat("material.shininess", 128.0f);
-        modelShader.setVec3("dirLight.direction", glm::vec3(cos(currentFrame), 4.5f, sin(currentFrame)));
-        modelShader.setVec3("dirLight.ambient", glm::vec3(0.5));
-        modelShader.setVec3("dirLight.diffuse", glm::vec3(0.3));
-        modelShader.setVec3("dirLight.specular", glm::vec3(0.2));
-        modelShader.setBool("blinn", blinn);
-        // view/projection transformations
+
+        // sun
+
+        lightShader.use();
         glm::mat4 projection = glm::perspective(glm::radians(programState->camera.Zoom),
                                                 (float) SCR_WIDTH / (float) SCR_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = programState->camera.GetViewMatrix();
-        modelShader.setMat4("projection", projection);
-        modelShader.setMat4("view", view);
-
-        // sun
+        lightShader.setMat4("projection", projection);
+        lightShader.setMat4("view", view);
         glm::mat4 model = glm::mat4(1.0f);
         glm::vec3 sunPos = glm::vec3(0.0f);
         float sunSize = 10.5f;
         model = glm::translate(model, sunPos);
         model = glm::scale(model, glm::vec3(sunSize));
         model = glm::rotate(model, currentFrame/4, glm::vec3(0.0f, 1.0f, 0.0f));
-        modelShader.setMat4("model", model);
-        sunModel.Draw(modelShader);
+        lightShader.setMat4("model", model);
+        sunModel.Draw(lightShader);
 
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
 
+        modelShader.use();
+        modelShader.setVec3("pointLight.ambient", glm::vec3(1.0));
+        modelShader.setVec3("pointLight.diffuse", glm::vec3(0.8));
+        modelShader.setVec3("pointLight.specular", glm::vec3(0.05));
+        modelShader.setVec3("pointLight.position", glm::vec3(0.0f));
+        modelShader.setFloat("pointLight.constant", programState->pointLight.constant);
+        modelShader.setFloat("pointLight.linear", programState->pointLight.linear);
+        modelShader.setFloat("pointLight.quadratic", programState->pointLight.quadratic);
+        modelShader.setVec3("viewPosition", programState->camera.Position);
+        modelShader.setFloat("material.shininess", 128.0f);
+        modelShader.setVec3("dirLight.direction", glm::vec3(0.0f));
+        modelShader.setVec3("dirLight.ambient", glm::vec3(0.01));
+        modelShader.setVec3("dirLight.diffuse", glm::vec3(0.02));
+        modelShader.setVec3("dirLight.specular", glm::vec3(0.0));
+        modelShader.setBool("blinn", blinn);
+        // view/projection transformations
+        modelShader.setVec3("color", glm::vec3(1.0f));
+        modelShader.setFloat("alpha", 1.0f);
+        modelShader.setMat4("projection", projection);
+        modelShader.setMat4("view", view);
         // mercury
         model = glm::mat4(1.0f);
         glm::vec3 mercuryPos = glm::vec3(sin(currentFrame/4)*13, 4.0f, cos(currentFrame/4)*13);
@@ -451,19 +449,25 @@ int main() {
 
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LEQUAL);
-        atmosphereShader.use();
-        atmosphereShader.setVec3("color", glm::vec3(0.53f, 0.65f, 0.81f));
-        atmosphereShader.setFloat("alpha", 0.2f);
-        atmosphereShader.setMat4("projection", projection);
-        atmosphereShader.setMat4("view", view);
+        modelShader.setVec3("color", glm::vec3(0.53f, 0.65f, 0.81f));
+        modelShader.setFloat("alpha", 0.1f);
 
         model = glm::mat4(1.0f);
         glm::vec3 atmospherePos = glm::vec3(sin(currentFrame/6)*24.3, 4.0f, cos(currentFrame/6)*24.3);
-        float atmosphereSize = 2.37f;
+        float atmosphereSize = 2.4f;
         model = glm::translate(model, atmospherePos);
         model = glm::scale(model, glm::vec3(atmosphereSize));
-        atmosphereShader.setMat4("model", model);
-        atmosphereModel.Draw(atmosphereShader);
+        modelShader.setMat4("model", model);
+        atmosphereModel.Draw(modelShader);
+
+        model = glm::mat4(1.0f);
+        atmospherePos = glm::vec3(sin(currentFrame/5)*18, 4.0f, cos(currentFrame/5)*18);
+        atmosphereSize = 2.5f;
+        model = glm::translate(model, atmospherePos);
+        model = glm::scale(model, glm::vec3(atmosphereSize));
+        modelShader.setVec3("color", glm::vec3(0.78f, 0.5f, 0.06f));
+        modelShader.setMat4("model", model);
+        atmosphereModel.Draw(modelShader);
 
         glDisable(GL_CULL_FACE);
 
@@ -585,9 +589,9 @@ void DrawImGui(ProgramState *programState) {
 //        ImGui::DragFloat3("Moon position", (float*)&programState->moonPosition);
 //        ImGui::DragFloat("Moon scale", &programState->moonScale, 0.05, 0.1, 4.0);
 
-//        ImGui::DragFloat3("pointLight.ambient", (float*)&programState->pointLight.ambient);
-//        ImGui::DragFloat3("pointLight.diffuse", (float*)&programState->pointLight.diffuse);
-//        ImGui::DragFloat3("pointLight.specular", (float*)&programState->pointLight.specular);
+        ImGui::DragFloat3("pointLight.constant", (float*)&programState->pointLight.constant);
+        ImGui::DragFloat3("pointLight.linear", (float*)&programState->pointLight.linear);
+        ImGui::DragFloat3("pointLight.quadratic", (float*)&programState->pointLight.quadratic);
 //
 //        ImGui::DragFloat3("dirLight.ambient", (float*)&programState->dirLight.ambient);
 //        ImGui::DragFloat3("dirLight.diffuse", (float*)&programState->dirLight.diffuse);

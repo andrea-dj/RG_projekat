@@ -37,6 +37,8 @@ uniform Material material;
 uniform DirLight dirLight;
 uniform vec3 viewPosition;
 uniform bool blinn;
+uniform float alpha;
+uniform vec3 color;
 
 // calculates the color when using a point light.
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
@@ -91,5 +93,5 @@ void main()
     vec3 viewDir = normalize(viewPosition - FragPos);
     vec3 result = CalcPointLight(pointLight, normal, FragPos, viewDir);
     result += CalcDirLight(dirLight, normal, viewDir);
-    FragColor = vec4(result, 1.0);
+    FragColor = vec4(color.rgb * result, alpha);
 }
