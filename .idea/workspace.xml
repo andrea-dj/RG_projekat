@@ -31,14 +31,7 @@
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/imgui.ini" beforeDir="false" afterPath="$PROJECT_DIR$/imgui.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project_base" beforeDir="false" afterPath="$PROJECT_DIR$/project_base" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/objects/asteroid/Map__12_Cellular.tga" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/objects/asteroid/Map__15_Noise.tga" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/objects/asteroid/Map__4_Mix.tga" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/objects/asteroid/asteroid OBJ.mtl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/objects/asteroid/asteroid OBJ.obj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/objects/earth/earth.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/program_state.txt" beforeDir="false" afterPath="$PROJECT_DIR$/resources/program_state.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/shaders/model_lighting.fs" beforeDir="false" afterPath="$PROJECT_DIR$/resources/shaders/model_lighting.fs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -69,23 +62,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "last_opened_file_path": "/home/andrea/Desktop/Grafika/grafika_projekat",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/andrea/Desktop/Grafika/grafika_projekat&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="CMake Application.project_base">
     <configuration name="STB_IMAGE" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="project_base" TARGET_NAME="STB_IMAGE" CONFIG_NAME="Debug">
       <method v="2">
@@ -151,7 +144,9 @@
       <workItem from="1681590848767" duration="302000" />
       <workItem from="1681592839684" duration="1622000" />
       <workItem from="1681600863836" duration="2471000" />
-      <workItem from="1681604078714" duration="3848000" />
+      <workItem from="1681604078714" duration="4383000" />
+      <workItem from="1681609318515" duration="242000" />
+      <workItem from="1681638762890" duration="1264000" />
     </task>
     <servers />
   </component>

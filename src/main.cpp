@@ -281,9 +281,9 @@ int main() {
     Model neptuneModel("resources/objects/neptune/neptune.obj");
     neptuneModel.SetShaderTextureNamePrefix("material.");
 
-    programState->pointLight.constant = 1.0f;
-    programState->pointLight.linear = 0.09f;
-    programState->pointLight.quadratic = 0.002f;
+//    programState->pointLight.constant = 1.0f;
+//    programState->pointLight.linear = 0.09f;
+//    programState->pointLight.quadratic = 0.002f;
 
 
 
@@ -335,9 +335,9 @@ int main() {
         modelShader.setVec3("pointLight.diffuse", glm::vec3(0.8));
         modelShader.setVec3("pointLight.specular", glm::vec3(0.05));
         modelShader.setVec3("pointLight.position", glm::vec3(0.0f));
-        modelShader.setFloat("pointLight.constant", programState->pointLight.constant);
-        modelShader.setFloat("pointLight.linear", programState->pointLight.linear);
-        modelShader.setFloat("pointLight.quadratic", programState->pointLight.quadratic);
+        modelShader.setFloat("pointLight.constant", 1.0f);
+        modelShader.setFloat("pointLight.linear", 0.09f);
+        modelShader.setFloat("pointLight.quadratic", 0.001f);
         modelShader.setVec3("viewPosition", programState->camera.Position);
         modelShader.setFloat("material.shininess", 128.0f);
         modelShader.setVec3("dirLight.direction", glm::vec3(0.0f));
@@ -416,8 +416,9 @@ int main() {
         float saturnSize = 0.01f;
         model = glm::translate(model, saturnPos);
         model = glm::scale(model, glm::vec3(saturnSize));
-        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 1.0f));
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+//        model = glm::rotate(model, glm::radians(programState->angley), glm::vec3(0.0f, 1.0f, 0.0f));
+//        model = glm::rotate(model, glm::radians(programState->anglez), glm::vec3(0.0f, 0.0f, 1.0f));
         modelShader.setMat4("model", model);
         saturnModel.Draw(modelShader);
 
@@ -470,8 +471,6 @@ int main() {
         atmosphereModel.Draw(modelShader);
 
         glDisable(GL_CULL_FACE);
-
-
 
 
         // draw skybox as last
@@ -579,18 +578,18 @@ void DrawImGui(ProgramState *programState) {
         ImGui::SliderFloat("Float slider", &f, 0.0, 1.0);
         ImGui::ColorEdit3("Background color", (float *) &programState->clearColor);
 //
-//        ImGui::SliderFloat("anglex", &programState->anglex, -360, 360);
-//        ImGui::SliderFloat("angley", &programState->angley, -360, 360);
-//        ImGui::SliderFloat("anglez", &programState->anglez, -360, 360);
+        ImGui::SliderFloat("anglex", &programState->anglex, -360, 360);
+        ImGui::SliderFloat("angley", &programState->angley, -360, 360);
+        ImGui::SliderFloat("anglez", &programState->anglez, -360, 360);
 
 //        ImGui::DragFloat3("Sun position", (float*)&programState->sunPosition);
 //        ImGui::DragFloat("Sun scale", &programState->sunScale, 0.05, 0.1, 4.0);
 //
 //        ImGui::DragFloat3("Moon position", (float*)&programState->moonPosition);
 //        ImGui::DragFloat("Moon scale", &programState->moonScale, 0.05, 0.1, 4.0);
-
-        ImGui::DragFloat3("pointLight.constant", (float*)&programState->pointLight.constant);
-        ImGui::DragFloat3("pointLight.linear", (float*)&programState->pointLight.linear);
+//
+//        ImGui::DragFloat3("pointLight.constant", (float*)&programState->pointLight.constant);
+//        ImGui::DragFloat3("pointLight.linear", (float*)&programState->pointLight.linear);
         ImGui::DragFloat3("pointLight.quadratic", (float*)&programState->pointLight.quadratic);
 //
 //        ImGui::DragFloat3("dirLight.ambient", (float*)&programState->dirLight.ambient);
