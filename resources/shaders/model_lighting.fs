@@ -92,6 +92,6 @@ void main()
     vec3 normal = normalize(Normal);
     vec3 viewDir = normalize(viewPosition - FragPos);
     vec3 result = CalcPointLight(pointLight, normal, FragPos, viewDir);
-    result += CalcDirLight(dirLight, normal, viewDir);
+//     result += CalcDirLight(dirLight, normal, viewDir);
     FragColor = vec4(color.rgb * result, alpha);
 }

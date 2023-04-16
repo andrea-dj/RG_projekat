@@ -32,6 +32,8 @@
       <change beforePath="$PROJECT_DIR$/imgui.ini" beforeDir="false" afterPath="$PROJECT_DIR$/imgui.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project_base" beforeDir="false" afterPath="$PROJECT_DIR$/project_base" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/program_state.txt" beforeDir="false" afterPath="$PROJECT_DIR$/resources/program_state.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/shaders/model_lighting.fs" beforeDir="false" afterPath="$PROJECT_DIR$/resources/shaders/model_lighting.fs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/shaders/model_lighting.vs" beforeDir="false" afterPath="$PROJECT_DIR$/resources/shaders/model_lighting.vs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -147,6 +149,10 @@
       <workItem from="1681604078714" duration="4383000" />
       <workItem from="1681609318515" duration="242000" />
       <workItem from="1681638762890" duration="1264000" />
+      <workItem from="1681651818858" duration="663000" />
+      <workItem from="1681654268348" duration="4198000" />
+      <workItem from="1681672046781" duration="936000" />
+      <workItem from="1681674884779" duration="2040000" />
     </task>
     <servers />
   </component>

@@ -62,10 +62,6 @@ struct ProgramState {
     Camera camera;
     bool CameraMouseMovementUpdateEnabled = true;
 
-    float anglex;
-    float angley;
-    float anglez;
-
     PointLight pointLight;
     PointLight dirLight;
 
@@ -159,8 +155,6 @@ int main() {
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
     (void) io;
-
-
 
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330 core");
@@ -281,11 +275,6 @@ int main() {
     Model neptuneModel("resources/objects/neptune/neptune.obj");
     neptuneModel.SetShaderTextureNamePrefix("material.");
 
-//    programState->pointLight.constant = 1.0f;
-//    programState->pointLight.linear = 0.09f;
-//    programState->pointLight.quadratic = 0.002f;
-
-
 
     // draw in wireframe
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -331,21 +320,16 @@ int main() {
         glCullFace(GL_BACK);
 
         modelShader.use();
-        modelShader.setVec3("pointLight.ambient", glm::vec3(1.0));
-        modelShader.setVec3("pointLight.diffuse", glm::vec3(0.8));
-        modelShader.setVec3("pointLight.specular", glm::vec3(0.05));
+        modelShader.setVec3("pointLight.ambient", glm::vec3(0.28, 0.2, 0.0));
+        modelShader.setVec3("pointLight.diffuse", glm::vec3(1.0, 0.9, 0.6));
+        modelShader.setVec3("pointLight.specular", glm::vec3(0.2, 0.2, 0.1));
         modelShader.setVec3("pointLight.position", glm::vec3(0.0f));
         modelShader.setFloat("pointLight.constant", 1.0f);
         modelShader.setFloat("pointLight.linear", 0.09f);
         modelShader.setFloat("pointLight.quadratic", 0.001f);
         modelShader.setVec3("viewPosition", programState->camera.Position);
         modelShader.setFloat("material.shininess", 128.0f);
-        modelShader.setVec3("dirLight.direction", glm::vec3(0.0f));
-        modelShader.setVec3("dirLight.ambient", glm::vec3(0.01));
-        modelShader.setVec3("dirLight.diffuse", glm::vec3(0.02));
-        modelShader.setVec3("dirLight.specular", glm::vec3(0.0));
         modelShader.setBool("blinn", blinn);
-        // view/projection transformations
         modelShader.setVec3("color", glm::vec3(1.0f));
         modelShader.setFloat("alpha", 1.0f);
         modelShader.setMat4("projection", projection);
@@ -417,8 +401,6 @@ int main() {
         model = glm::translate(model, saturnPos);
         model = glm::scale(model, glm::vec3(saturnSize));
         model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-//        model = glm::rotate(model, glm::radians(programState->angley), glm::vec3(0.0f, 1.0f, 0.0f));
-//        model = glm::rotate(model, glm::radians(programState->anglez), glm::vec3(0.0f, 0.0f, 1.0f));
         modelShader.setMat4("model", model);
         saturnModel.Draw(modelShader);
 
@@ -577,24 +559,11 @@ void DrawImGui(ProgramState *programState) {
         ImGui::Text("Hello text");
         ImGui::SliderFloat("Float slider", &f, 0.0, 1.0);
         ImGui::ColorEdit3("Background color", (float *) &programState->clearColor);
-//
-        ImGui::SliderFloat("anglex", &programState->anglex, -360, 360);
-        ImGui::SliderFloat("angley", &programState->angley, -360, 360);
-        ImGui::SliderFloat("anglez", &programState->anglez, -360, 360);
 
-//        ImGui::DragFloat3("Sun position", (float*)&programState->sunPosition);
-//        ImGui::DragFloat("Sun scale", &programState->sunScale, 0.05, 0.1, 4.0);
-//
-//        ImGui::DragFloat3("Moon position", (float*)&programState->moonPosition);
-//        ImGui::DragFloat("Moon scale", &programState->moonScale, 0.05, 0.1, 4.0);
-//
 //        ImGui::DragFloat3("pointLight.constant", (float*)&programState->pointLight.constant);
 //        ImGui::DragFloat3("pointLight.linear", (float*)&programState->pointLight.linear);
         ImGui::DragFloat3("pointLight.quadratic", (float*)&programState->pointLight.quadratic);
-//
-//        ImGui::DragFloat3("dirLight.ambient", (float*)&programState->dirLight.ambient);
-//        ImGui::DragFloat3("dirLight.diffuse", (float*)&programState->dirLight.diffuse);
-//        ImGui::DragFloat3("dirLight.specular", (float*)&programState->dirLight.specular);
+
         ImGui::End();
     }
 
