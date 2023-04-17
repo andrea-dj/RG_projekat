@@ -1,5 +1,5 @@
-# project_base
-Prazan projekat sa pratećim bibliotekama koje koristimo na času. 
+# Solar system
+Projekat iz predmeta Računarska grafika: radila Andrea Đukanović 105/2020
 
 # Uputstvo
 - Kretanje u prostoru uz pomoć miša i tastature:
@@ -12,4 +12,9 @@ Prazan projekat sa pratećim bibliotekama koje koristimo na času.
     - `E` - kretanje ka dole
 - Funkcionalnosti:
     - `F1` - otvara ImGUI sa svim opcijama 
-    - `C` - Toggle zaključavanje i otključavanje kamere
+    - `C` - Zaključavanje i otključavanje kamere
+    - `B` - Uključivanje i isključivanje Blin-Fong modela osvetljenja
+- Implementirane oblasti iz grupe A:
+    - Cubemaps
+- Link ka video objašnjenju:
+  https://youtu.be/nR11MErOfD8
