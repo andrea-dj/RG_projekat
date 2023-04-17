@@ -26,8 +26,6 @@ void processInput(GLFWwindow *window);
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
 
-unsigned int loadTexture(const char *path);
-
 unsigned int loadCubemap(vector<std::string> faces);
 
 // settings
@@ -39,7 +37,7 @@ const unsigned int SCR_HEIGHT = 700;
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
-bool blinn = false;
+bool blinn = true;
 
 // timing
 float deltaTime = 0.0f;
@@ -63,10 +61,9 @@ struct ProgramState {
     bool CameraMouseMovementUpdateEnabled = true;
 
     PointLight pointLight;
-    PointLight dirLight;
 
     ProgramState()
-            : camera(glm::vec3(-11.1f, 0.5f, 38.38f)) {}
+            : camera(glm::vec3(-33.7f, 16.98f, -21.71f)) {}
 
     void SaveToFile(std::string filename);
 
@@ -301,6 +298,8 @@ int main() {
 
         // sun
 
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
         lightShader.use();
         glm::mat4 projection = glm::perspective(glm::radians(programState->camera.Zoom),
                                                 (float) SCR_WIDTH / (float) SCR_HEIGHT, 0.1f, 100.0f);
@@ -316,19 +315,16 @@ int main() {
         lightShader.setMat4("model", model);
         sunModel.Draw(lightShader);
 
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_BACK);
-
         modelShader.use();
-        modelShader.setVec3("pointLight.ambient", glm::vec3(0.28, 0.2, 0.0));
-        modelShader.setVec3("pointLight.diffuse", glm::vec3(1.0, 0.9, 0.6));
-        modelShader.setVec3("pointLight.specular", glm::vec3(0.2, 0.2, 0.1));
+        modelShader.setVec3("pointLight.ambient", glm::vec3(0.47f, 0.25f, 0.1f));
+        modelShader.setVec3("pointLight.diffuse", 0.6f, 0.6f, 0.3f);
+        modelShader.setVec3("pointLight.specular", 0.2f, 0.2f, 0.0f);
         modelShader.setVec3("pointLight.position", glm::vec3(0.0f));
         modelShader.setFloat("pointLight.constant", 1.0f);
         modelShader.setFloat("pointLight.linear", 0.09f);
-        modelShader.setFloat("pointLight.quadratic", 0.001f);
+        modelShader.setFloat("pointLight.quadratic", 0.0005f);
         modelShader.setVec3("viewPosition", programState->camera.Position);
-        modelShader.setFloat("material.shininess", 128.0f);
+        modelShader.setFloat("material.shininess", 16.0f);
         modelShader.setBool("blinn", blinn);
         modelShader.setVec3("color", glm::vec3(1.0f));
         modelShader.setFloat("alpha", 1.0f);
@@ -336,7 +332,7 @@ int main() {
         modelShader.setMat4("view", view);
         // mercury
         model = glm::mat4(1.0f);
-        glm::vec3 mercuryPos = glm::vec3(sin(currentFrame/4)*13, 4.0f, cos(currentFrame/4)*13);
+        glm::vec3 mercuryPos = glm::vec3(sin(currentFrame/4)*13.5, 4.0f, cos(currentFrame/4)*13.5);
         float mercurySize = 1.7f;
         model = glm::translate(model, mercuryPos);
         model = glm::scale(model, glm::vec3(mercurySize));
@@ -552,28 +548,14 @@ void DrawImGui(ProgramState *programState) {
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-
     {
-        static float f = 0.0f;
-        ImGui::Begin("Hello window");
-        ImGui::Text("Hello text");
-        ImGui::SliderFloat("Float slider", &f, 0.0, 1.0);
-        ImGui::ColorEdit3("Background color", (float *) &programState->clearColor);
-
-//        ImGui::DragFloat3("pointLight.constant", (float*)&programState->pointLight.constant);
-//        ImGui::DragFloat3("pointLight.linear", (float*)&programState->pointLight.linear);
-        ImGui::DragFloat3("pointLight.quadratic", (float*)&programState->pointLight.quadratic);
-
-        ImGui::End();
-    }
-
-    {
-        ImGui::Begin("Camera info");
+        ImGui::Begin("Camera and lighting info");
         const Camera& c = programState->camera;
         ImGui::Text("Camera position: (%f, %f, %f)", c.Position.x, c.Position.y, c.Position.z);
         ImGui::Text("(Yaw, Pitch): (%f, %f)", c.Yaw, c.Pitch);
         ImGui::Text("Camera front: (%f, %f, %f)", c.Front.x, c.Front.y, c.Front.z);
         ImGui::Checkbox("Camera mouse update", &programState->CameraMouseMovementUpdateEnabled);
+        ImGui::Checkbox("Blinn-Phong lighting", &blinn);
         ImGui::End();
     }
 
@@ -602,42 +584,6 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
     }
 }
 
-unsigned int loadTexture(char const * path)
-{
-    unsigned int textureID;
-    glGenTextures(1, &textureID);
-
-    int width, height, nrComponents;
-    unsigned char *data = stbi_load(path, &width, &height, &nrComponents, 0);
-    if (data)
-    {
-        GLenum format;
-        if (nrComponents == 1)
-            format = GL_RED;
-        else if (nrComponents == 3)
-            format = GL_RGB;
-        else if (nrComponents == 4)
-            format = GL_RGBA;
-
-        glBindTexture(GL_TEXTURE_2D, textureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        stbi_image_free(data);
-    }
-    else
-    {
-        std::cout << "Texture failed to load at path: " << path << std::endl;
-        stbi_image_free(data);
-    }
-
-    return textureID;
-}
 
 // -------------------------------------------------------
 unsigned int loadCubemap(vector<std::string> faces)
